@@ -2,7 +2,7 @@ import axios from "axios";
 import { useMemo } from "react";
 import { useAuth } from "@clerk/react";
 
-export const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+export const API = `${process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:8001"}/api`;
 
 export function useApi() {
   const { getToken } = useAuth();
