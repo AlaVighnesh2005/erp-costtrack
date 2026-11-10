@@ -118,7 +118,7 @@ const Editor = ({ kind, plan, setPlan, onSaved, onNew }) => {
   const remove = async () => {
     try { await api.delete(`/plans/${plan.id}`); toast.success("Draft plan deleted"); onNew(); onSaved(); } catch (e) { toast.error(errMsg(e)); }
   };
-  const crews = master.crews.filter((c) => !plan.project_number || c.project_number === plan.project_number);
+  const crews = master.crews.filter((c) => !plan.project_number || !c.project_number || c.project_number === plan.project_number);
   const save = async (publish) => {
     setBusy(true);
     try {

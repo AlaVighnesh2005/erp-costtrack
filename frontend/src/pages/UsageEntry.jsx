@@ -47,7 +47,7 @@ export default function UsageEntry({ type }) {
   const resOptions = useMemo(() => resources.map((r) => ({ value: r.number, label: `${r.number} - ${r.name}` })), [resources]);
   const reasons = master.reason_codes.filter((r) => r.resource_type === "equipment");
   const bonusTypes = master.lookups.filter((l) => l.type === "BONUS_TYPE" && l.status !== "Inactive").map((l) => l.meaning);
-  const crews = master.crews.filter((c) => !e.header.project_number || c.project_number === e.header.project_number);
+  const crews = master.crews.filter((c) => !e.header.project_number || !c.project_number || c.project_number === e.header.project_number);
   const [rows, setRows] = useState([]);
   const [defaults, setDefaults] = useState({ REG: type === "labor" ? 8 : 6 });
   const locked = !!e.editing && !["draft", "rejected"].includes(e.editing.status);

@@ -44,7 +44,7 @@ Table("items", metadata, identity(), Column("number", Text, nullable=False, uniq
       Column("category", Text), Column("cost_org", Text), Column("currency", Text),
       Column("source", Text), Column("synced_at", Text), CheckConstraint("unit_cost >= 0"))
 Table("crews", metadata, identity(), Column("name", Text, nullable=False),
-      Column("project_number", Text, ForeignKey("projects.number"), nullable=False), Column("foreman", Text))
+      Column("project_number", Text, ForeignKey("projects.number"), nullable=True), Column("foreman", Text))
 Table("hour_types", metadata, identity(), Column("resource_type", Text, nullable=False),
       Column("code", Text, nullable=False), Column("name", Text), Column("requires_reason", Boolean),
       Column("expenditure_type", Text), money("order"), UniqueConstraint("resource_type", "code"))

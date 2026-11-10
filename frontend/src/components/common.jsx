@@ -89,20 +89,41 @@ export const Sel = ({ options, placeholder, className = "", ...p }) => (
   </select>
 );
 
+const CURTIS_PROJECTS = new Set([
+  "SFI20001", "PEC10001", "PI30010", "PIN10004", "523105", "1012403",
+  "PI20070", "BILL-2026-003", "CAP10001", "OTT202610161323",
+  "OTT1791980841417", "OTT1791981283200", "OTT1791983340654", "OTT20261014112517", "OTT1791977778329"
+]);
+
 export const ProjectTaskFields = ({ value, onChange, testid = "pt", disabled }) => {
   const { master } = useApp();
   const tasks = master.tasks.filter((t) => t.project_number === value.project_number);
+
+  const sortedProjects = [...master.projects].sort((a, b) => {
+    const aCurtis = CURTIS_PROJECTS.has(a.number) ? 0 : 1;
+    const bCurtis = CURTIS_PROJECTS.has(b.number) ? 0 : 1;
+    if (aCurtis !== bCurtis) return aCurtis - bCurtis;
+    return a.number.localeCompare(b.number, undefined, { numeric: true });
+  });
+
+  const sortedTasks = [...tasks].sort((a, b) =>
+    a.number.localeCompare(b.number, undefined, { numeric: true })
+  );
+
   return (
     <>
       <Field label="Project #">
         <Sel data-testid={`${testid}-project-select`} disabled={disabled} value={value.project_number} placeholder="Select project"
           onChange={(e) => onChange({ project_number: e.target.value, task_number: "" })}
-          options={master.projects.map((p) => ({ value: p.number, label: `${p.number} - ${p.name}` }))} />
+          options={sortedProjects.map((p) => ({
+            value: p.number,
+            label: `${CURTIS_PROJECTS.has(p.number) ? "⭐ " : ""}${p.number} - ${p.name}`
+          }))} />
       </Field>
       <Field label="Task #">
         <Sel data-testid={`${testid}-task-select`} disabled={disabled} value={value.task_number} placeholder="Select task"
           onChange={(e) => onChange({ task_number: e.target.value })}
-          options={tasks.map((t) => ({ value: t.number, label: `${t.number} - ${t.name}` }))} />
+          options={sortedTasks.map((t) => ({ value: t.number, label: `${t.number} - ${t.name}` }))} />
       </Field>
     </>
   );
