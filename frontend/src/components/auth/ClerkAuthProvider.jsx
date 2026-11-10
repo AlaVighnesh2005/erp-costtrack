@@ -4,7 +4,7 @@ import { ClerkProvider } from "@clerk/react";
 
 const appearance = { variables: { colorPrimary: "#D97706", borderRadius: "0.375rem", fontFamily: "Inter, sans-serif" } };
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:8001";
 
 export default function ClerkAuthProvider({ children }) {
   const navigate = useNavigate();
